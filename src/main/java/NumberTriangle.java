@@ -36,6 +36,8 @@ public class NumberTriangle {
     private NumberTriangle left;
     private NumberTriangle right;
 
+    private int best;
+
     public NumberTriangle(int root) {
         this.root = root;
     }
@@ -65,7 +67,19 @@ public class NumberTriangle {
      * Note: a NumberTriangle contains at least one value.
      */
     public void maxSumPath() {
-        // for fun [not for credit]:
+        System.out.println(maxSumPathHelper());
+    }
+
+    public int maxSumPathHelper(){
+        if (this.best!=0){
+            return this.best;
+        }
+        if (this.isLeaf()){
+            return this.root;
+        }
+        int newBest = this.root+Math.max(this.left.maxSumPathHelper(), this.right.maxSumPathHelper());
+        this.best = newBest;
+        return this.best;
     }
 
 
@@ -90,8 +104,11 @@ public class NumberTriangle {
      *
      */
     public int retrieve(String path) {
-        // TODO implement this method
-        return -1;
+        NumberTriangle curr = this;
+        for (char c:path.toCharArray()){
+            curr = (c=='l' ? curr.left  : curr.right);
+        }
+        return curr.root;
     }
 
     /** Read in the NumberTriangle structure from a file.
